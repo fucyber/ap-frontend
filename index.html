@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AP-Front</title>
+  </head>
+  <body>
+
+    <h3>Result: <span id="code1"></span></h3>
+    <pre>
+      const code = generateCode({
+        name: "Somchai",
+        surname: "Thomson",
+        gender: "F",
+        birthDate: "1/1/1900"
+      })
+      console.log('code: ', code)
+    </pre>
+
+    <h3>Result: <span id="code2"></span></h3>
+    <pre>
+      const code2 = generateCode({
+        name: "Helen",
+        surname: "Yu",
+        gender: "F",
+        birthDate: "1/12/1950"
+      })
+      console.log('code2: ', code2)
+    </pre>
+
+    <h3>Result: <span id="code3"></span></h3>
+    <pre>
+      const code3 = generateCode({
+        name: "Mickey",
+        surname: "Mouse",
+        gender: "M",
+        birthDate: "16/1/1928"
+      })
+      console.log('code3: ', code3)
+    </pre>
+
+    <script>
+
+      function surNameLetter(string) {
+        const strLength = 3;
+        const strRemoveVowel = string.toUpperCase().replace(/[AEIOU]/g, "");
+        const countStr = strRemoveVowel.length;
+        let result;
+        if(countStr >= strLength){
+          result = strRemoveVowel.substring(0, strLength);
+        } else if (countStr < strLength) {
+          const strVowel  = getVowelFromStr(string);
+          const countLeft = strLength - strRemoveVowel.length;
+          result = strRemoveVowel + strVowel.substring(0, countLeft);
+        }
+
+        if(result.length < 3){
+          const countLeft = strLength - result.length;
+          let str = '';
+          for (let i = 1; i <= countLeft; i++) {
+            str += 'X';
+          }
+          result = result.toUpperCase() + str;
+        }
+        return result;
+      }
+
+      function getVowelFromStr(strings){
+        return Array.prototype.filter.call(strings, char => "AEIOUaeiou".includes(char)).join("").toUpperCase()
+      }
+
+      // console.log(surNameLetter('Somchai'))
+      // console.log(surNameLetter('Newman'))
+      // console.log(surNameLetter('Manee'))
+      // console.log(surNameLetter('Eve'))
+      // console.log(surNameLetter('Ko'))
+      // console.log(surNameLetter('Od'))
+      // console.log('------------------')
+
+      function firstNameLetter(strings) {
+        const strLength = 3;
+        const strRemoveVowel = strings.toUpperCase().replace(/[AEIOU]/g, "");
+        const countStr = strRemoveVowel.length;
+        let result;
+        if(countStr === strLength){
+          result = strRemoveVowel.substring(0, strLength);
+        } else if (countStr > strLength) {
+          result =  strRemoveVowel.substring(0, 1) + strRemoveVowel.substring(2,3) + strRemoveVowel.substring(3,4);
+        } else if (countStr < strLength) {
+          const strVowel = getVowelFromStr(strings);
+          const countLeft = strLength - strRemoveVowel.length;
+          result = strRemoveVowel + strVowel.substring(0, countLeft);
+        }
+
+        if(result.length < 3){
+          const countLeft = strLength - result.length;
+          let str = '';
+          for (let i = 1; i <= countLeft; i++) {
+            str += 'X';
+          }
+          result = result.toUpperCase() + str;
+        }
+        return result;
+      }
+
+      // console.log(firstNameLetter('Apirak'))
+      // console.log(firstNameLetter('Thomson'))
+      // console.log(firstNameLetter('Samantha'))
+      // console.log(firstNameLetter('POP'))
+      // console.log(firstNameLetter('Al'))
+      // console.log(firstNameLetter('Mo'))
+      // console.log('------------------')
+
+
+      function birthDayLetter(birthDate, gender){
+
+        const dateStr = new Date(birthDate.split(/\D/).reverse().join('-'));
+        const date =  dateStr.getDate();
+        const month =  dateStr.getMonth();
+        const year  =  dateStr.getFullYear().toString().substr(-2);
+
+        const letterOfMonth = [
+          'A','B','C','D','E','H','L','M','P','R','S','T'
+        ];
+        let bDate = date;
+        if(gender.toUpperCase() === 'M' && date <= 9 ){
+          bDate = '0' + date;
+        }
+
+        if(gender.toUpperCase() === 'F'){
+          bDate = date + 40;
+        }
+        return year + letterOfMonth[month] + bDate;
+      }
+
+      function generateCode({name, surname, gender, birthDate}){
+        return surNameLetter(surname) + firstNameLetter(name) + birthDayLetter(birthDate, gender);
+      }
+
+      const code = generateCode({
+        name: "Somchai",
+        surname: "Thomson",
+        gender: "F",
+        birthDate: "1/1/1900"
+      })
+      document.getElementById('code1').innerHTML = code
+      console.log('code: ', code)
+      console.log('------------------')
+
+      const code2 = generateCode({
+        name: "Helen",
+        surname: "Yu",
+        gender: "F",
+        birthDate: "1/12/1950"
+      })
+      document.getElementById('code2').innerHTML = code2
+      console.log('code2: ', code2)
+      console.log('------------------')
+
+      const code3 = generateCode({
+        name: "Mickey",
+        surname: "Mouse",
+        gender: "M",
+        birthDate: "16/1/1928"
+      })
+      document.getElementById('code3').innerHTML = code3
+      console.log('code3: ', code3)
+      console.log('------------------')
+
+      // console.log(surNameLetter('Thomson'))
+      // console.log(firstNameLetter('Somchai'))
+
+
+
+    </script>
+  </body>
+</html>
